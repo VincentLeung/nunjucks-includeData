@@ -1,0 +1,29 @@
+{
+  "name": "nunjucks-includeData",
+  "version": "0.0.1",
+  "description": "Let nunjucks template Include data from JSON file",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VincentLeung/nunjucks-includeData.git"
+  },
+  "keywords": [
+    "nunjucks json",
+    "nunjucks data file",
+    "nunjucks json data file",
+    "json",
+    "data file",
+    "json data file",
+    "nunjucks",
+    "expression"
+  ],
+  "author": "Vincent Leung",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/VincentLeung/nunjucks-includeData/issues"
+  },
+  "homepage": "https://github.com/VincentLeung/nunjucks-includeData",
+  "devDependencies": {
+    "nunjucks": "^2.4.2"
+  }
+}
