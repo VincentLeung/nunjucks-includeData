@@ -20,7 +20,7 @@ njIncludeData.install(nunjucksEnv);  // Init the extension with the nunjucks env
 Then:
 Template file under `templatesDir`
 ```javascript
-{% includeData user = 'data/user.json' %}
+{% includeData 'data/user.json' as user %}
 
 Hello {{ user.firstName }} {{ user.lastName}}
 ```
@@ -39,17 +39,18 @@ Hello Bill Gate
 
 #Syntax
 ```javascript
-{% includeData scope=file [, scope=file, ...]%}
+{% includeData <file> [as <namespace>] [clean] [, <file> [as <namespace>] [clean], ...]%}
 ```
-- scope: it is global scope if scope is _
 - file: path is relative to the templatesDir (see the config section above)
+- namespace: if no namespace supplied, then it will be global namespace
+- clean: clean the namespace before read in the file, this option cannot be applied on the global namespace
 
 ##Example
 
 ```javascript
 {% includeData
-  _ = 'data/user.json',
-  user = 'data/user.json'
+  'data/user.json',
+  'data/user.json' as user
 %}
 
 Hello {{ firstName }} {{ lastName}}
