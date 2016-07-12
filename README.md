@@ -43,7 +43,7 @@ Hello Bill Gate
 ```
 - `file`: path is relative to the templatesDir (see the config section above)
 - `namespace`: if no namespace supplied, then it will be global namespace
-- `clean`: clean the namespace before read in the file, this option cannot be applied on the global namespace
+- `clean`: clean the namespace before read in the file, this option has no effect on the global namespace
 
 ##Example
 
