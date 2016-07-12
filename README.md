@@ -39,7 +39,7 @@ Hello Bill Gate
 
 #Syntax
 ```javascript
-{% includeData <file> [as <namespace>] [clean] [, <file> [as <namespace>] [clean], ...]%}
+{% includeData <file> [as <namespace>] [clean] [, <file> [as <namespace>] [clean], ...] %}
 ```
 - file: path is relative to the templatesDir (see the config section above)
 - namespace: if no namespace supplied, then it will be global namespace
