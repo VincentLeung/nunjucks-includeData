@@ -1,14 +1,6 @@
 function IncludeDataExtension(env) {
     this.tags = ['includeData'];
 
-    this.parse2 = function(parser, nodes, lexer) {
-        var tok = parser.nextToken();
-        var args = parser.parseSignature(null, true);
-        parser.advanceAfterBlockEnd(tok.value);
-        console.log(JSON.stringify(args, null, 2));
-        return new nodes.CallExtension(this, 'run', args);
-    };
-
     this.parse = function(parser, nodes, lexer) {
         var tok = parser.nextToken();
         var args = new nodes.NodeList(tok.lineno, tok.colno);
@@ -31,7 +23,7 @@ function IncludeDataExtension(env) {
                     tok.lineno,
                     tok.colno);
             }
-            var template = parser.parsePrimary();
+            var template = parser.parseExpression();
             var aliasName = (parser.skipSymbol('as')) ? parser.parsePrimary().value : '';
             var clean = parser.skipSymbol('clean');
             var dict = new nodes.Dict(template.lineno, template.colno);
@@ -42,7 +34,7 @@ function IncludeDataExtension(env) {
             dict.addChild(new nodes.Pair(template.lineno,
                                           template.colno,
                                           new nodes.Literal(template.lineno, template.colno, 'file'),
-                                          new nodes.Literal(template.lineno, template.colno, template.value)));
+                                          template));
             dict.addChild(new nodes.Pair(template.lineno,
                                           template.colno,
                                           new nodes.Literal(template.lineno, template.colno, 'namespace'),
