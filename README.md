@@ -41,7 +41,7 @@ Hello Bill Gate
 ```javascript
 {% includeData <file> [as <namespace>] [clean] [, <file> [as <namespace>] [clean], ...] %}
 ```
-- `file`: path is relative to the templatesDir (see the config section above)
+- `file`: path is relative to the templatesDir (see the config section above), expression is accepted
 - `namespace`: if no namespace supplied, then it will be global namespace
 - `clean`: clean the namespace before read in the file, this option has no effect on the global namespace
 
