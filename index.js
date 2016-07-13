@@ -86,7 +86,7 @@ function IncludeDataExtension(env) {
                 jsonData = this.includeJson(jsonData, ctx);
                 return jsonData;
             } else {
-                console.log("error to load: " + data.file);
+                console.log("error to load: " + fileName);
             }
         } catch (e) {
             console.log(e);
