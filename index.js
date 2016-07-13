@@ -8,8 +8,10 @@ function IncludeDataExtension(env) {
         file: 'file',
         data: 'data',
         namespace: 'namespace',
-        injectToRoot_as_: '__injectToRoot_as_',
-        injectToHere_as_: '__injectToHere_as_'
+        injectToRoot_as: '__injecttoroot_as_',
+        injectToRoot_asClean: '__injecttoroot_asclean_',
+        injectToHere_as: '__injecttohere_as_',
+        injectToHere_asClean: '__injecttohere_asclean_'
     };
 
     this.parse = function(parser, nodes, lexer) {
@@ -70,16 +72,28 @@ function IncludeDataExtension(env) {
 
     this.includeJson = function(root, rootCtx) {
         for(let {parent, node, key, path, deep} of new RecursiveIterator(root)) {
-            if (key.startsWith(this.keywords.injectToRoot_as_)) {
+            var lowerCaseKey = key.toLowerCase();
+            var keyPrefix = null;
+            var ctx = rootCtx;
+            var clean = false;
+            if (lowerCaseKey.startsWith(this.keywords.injectToRoot_as)) {
+                keyPrefix = this.keywords.injectToRoot_as;
+            } else if (lowerCaseKey.startsWith(this.keywords.injectToRoot_asClean)) {
+                keyPrefix = this.keywords.injectToRoot_asClean;
+                clean = true;
+            } else if (lowerCaseKey.startsWith(this.keywords.injectToHere_as)) {
+                keyPrefix = this.keywords.injectToHere_as;
+                ctx = parent;
+            } else if (lowerCaseKey.startsWith(this.keywords.injectToHere_asClean)) {
+                keyPrefix = this.keywords.injectToHere_asClean;
+                ctx = parent;
+                clean = true;
+            }
+            if (keyPrefix) {
                 delete parent[key];
                 var jsonData = this.readFile(node, rootCtx);
-                var namespace = key.substring(this.keywords.injectToRoot_as_.length);
-                this.addData(rootCtx, jsonData, namespace, true);
-            } else if (key.startsWith(this.keywords.injectToHere_as_)) {
-                delete parent[key];
-                var jsonData = this.readFile(node, rootCtx);
-                var namespace = key.substring(this.keywords.injectToHere_as_.length);
-                this.addData(parent, jsonData, namespace, true);
+                var namespace = key.substring(keyPrefix.length);
+                this.addData(ctx, jsonData, namespace, clean);
             }
         }
         return root;
