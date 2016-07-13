@@ -65,7 +65,6 @@ function IncludeDataExtension(env) {
             var data = args.data[i];
             var jsonData = this.readFile(data.file, context.ctx);
             this.addData(context.ctx, jsonData, data.namespace, data.clean);
-            console.log(JSON.stringify(jsonData, null, 2));
         }
     };
 
