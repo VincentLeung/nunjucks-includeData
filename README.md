@@ -17,26 +17,6 @@ var nunjucksEnv = nunjucks.configure( templatesDir, { ... } );  // Config your n
 njIncludeData.install(nunjucksEnv);  // Init the extension with the nunjucks environment
 ```
 
-Then:
-Template file under `templatesDir`
-```javascript
-{% includeData 'data/user.json' as user %}
-
-Hello {{ user.firstName }} {{ user.lastName}}
-```
-
-JSON data file: `templatesDir`/data/user.json
-```json
-{
-	"firstName": "Bill",
-	"lastName": "Gate"
-}
-```
-Display output:
-```html
-Hello Bill Gate
-```
-
 #Tag Syntax
 ```javascript
 {% includeData <file> [as <namespace>] [clean] [, <file> [as <namespace>] [clean], ...] %}
@@ -77,7 +57,13 @@ Empty the namespace before json injection.  Produce the same result as `__inject
 - `file`: path is relative to the templatesDir (see the config section above), expression is accepted
 
 ##Example 1 - Basic
-
+JSON data file: `templatesDir`/data/user.json
+```json
+{
+	"firstName": "Bill",
+	"lastName": "Gate"
+}
+```
 Template:
 ```javascript
 {% includeData
@@ -86,78 +72,43 @@ Template:
 %}
 
 Hello {{ firstName }} {{ lastName}}
-Hello again {{ user.firstName }} {{ user.lastName}}
+Hi {{ user.firstName }} {{ user.lastName}}
 ```
 Display output:
 ```html
 Hello Bill Gate
-Hello again Bill Gate
+Hi Bill Gate
 ```
-
-##Example 2 - Inject to root
+##Example 2 - Basic clean
 JSON data file: `templatesDir`/data/user.json
 ```json
 {
-	"firstName": "Bill",
-	"lastName": "Gate",
-	"__injectToRoot_as_contact": "data/contact.json",
-	"__injectToRoot_as_": "data/contact.json"
+	"firstName": "Tim",
+	"lastName": "Cook",
+	"email": "tim.cook@gmail.com"
 }
 ```
-JSON data file: `templatesDir`/data/contact.json
-```json
-{
-	"email": "bill.gate@gamil.com"
-}
-```
-
-Template:
-```javascript
-{% includeData
-  'data/user.json' as user
-%}
-
-Hello {{ user.firstName }} {{ user.lastName}}
-Email: {{ contact.email }}
-Email again: {{ email }}
-```
-Display output:
-```html
-Hello Bill Gate
-Email: bill.gate@gmail.com
-Email again: bill.gate@gmail.com
-```
-
-##Example 3 - Inject to here
-JSON data file: `templatesDir`/data/user.json
+JSON data file: `templatesDir`/data/user2.json
 ```json
 {
 	"firstName": "Bill",
-	"lastName": "Gate",
-	"__injectToHere_as_contact": "data/contact.json",
-	"__injectToHere_as_": "data/contact.json"
+	"lastName": "Gate"
 }
 ```
-JSON data file: `templatesDir`/data/contact.json
-```json
-{
-	"email": "bill.gate@gamil.com"
-}
-```
-
 Template:
 ```javascript
 {% includeData
-  'data/user.json' as user
+  'data/user.json' as user,
+  'data/user2.json' as user,
+  'data/user.json' as player,
+  'data/user2.json' as player clean
 %}
 
-Hello {{ user.firstName }} {{ user.lastName}}
-Email: {{ user.contact.email }}
-Email again: {{ user.email }}
+Hello {{ user.firstName }} {{ user.lastName}} {{ user.email }}!
+Hi {{ player.firstName }} {{ player.lastName}} {{ player.email }}!
 ```
 Display output:
 ```html
-Hello Bill Gate
-Email: bill.gate@gmail.com
-Email again: bill.gate@gmail.com
+Hello Bill Gate tim.cook@gmail.com!
+Hi Bill Gate !
 ```
