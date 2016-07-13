@@ -60,7 +60,7 @@ __injectToHere_as_[namespace]: <file>
 - `namespace`: if no namespace supplied, then it will be the current namespace
 - `file`: path is relative to the templatesDir (see the config section above), expression is accepted
 
-##Example 1
+##Example 1 - Basic
 
 Template:
 ```javascript
@@ -78,7 +78,7 @@ Hello Bill Gate
 Hello again Bill Gate
 ```
 
-##Example 2
+##Example 2 - Inject to root
 JSON data file: `templatesDir`/data/user.json
 ```json
 {
@@ -112,7 +112,7 @@ Email: bill.gate@gmail.com
 Email again: bill.gate@gmail.com
 ```
 
-##Example 3
+##Example 3 - Inject to here
 JSON data file: `templatesDir`/data/user.json
 ```json
 {
