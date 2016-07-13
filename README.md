@@ -126,12 +126,25 @@ JSON data file: `templatesDir`/data/user2.json
 ```json
 {
 	"firstName": "Bill",
-	"lastName": "Gate",
-	"email": "bill.gate@gmail.com"
+	"lastName": "Gate"
+}
+```
+JSON data file: `templatesDir`/data/user3.json
+```json
+{
+	"firstName": "Peter",
+	"lastName": "Pan",
+	"email": "peter.pan@gmail.com"
 }
 ```
 Template:
 ```javascript
+{% includeData
+  'data/user3.json' as player
+%}
+
+Morning {{ player.firstName }} {{ player.lastName}} {{ player.email }}!
+
 {% includeData
   'data/user.json' as user
 %}
@@ -141,6 +154,53 @@ Hi {{ player.firstName }} {{ player.lastName}} {{ player.email }}!
 ```
 Display output:
 ```html
+Morning Peter Pan peter.pan@gmail.com!
 Hello Tim Cook tim.cook@gmail.com!
-Hi Bill Gate bill.gate@gmail.com!
+Hi Bill Gate peter.pan@gmail.com!
+```
+##Example 4 - Inject to root (clean)
+JSON data file: `templatesDir`/data/user.json
+```json
+{
+	"firstName": "Tim",
+	"lastName": "Cook",
+	"email": "tim.cook@gmail.com",
+	"__injectToRoot_asClean_player": "data/user2.json"
+}
+```
+JSON data file: `templatesDir`/data/user2.json
+```json
+{
+	"firstName": "Bill",
+	"lastName": "Gate"
+}
+```
+JSON data file: `templatesDir`/data/user3.json
+```json
+{
+	"firstName": "Peter",
+	"lastName": "Pan",
+	"email": "peter.pan@gmail.com"
+}
+```
+Template:
+```javascript
+{% includeData
+  'data/user3.json' as player
+%}
+
+Morning {{ player.firstName }} {{ player.lastName}} {{ player.email }}!
+
+{% includeData
+  'data/user.json' as user
+%}
+
+Hello {{ user.firstName }} {{ user.lastName}} {{ user.email }}!
+Hi {{ player.firstName }} {{ player.lastName}} {{ player.email }}!
+```
+Display output:
+```html
+Morning Peter Pan peter.pan@gmail.com!
+Hello Tim Cook tim.cook@gmail.com!
+Hi Bill Gate !
 ```
