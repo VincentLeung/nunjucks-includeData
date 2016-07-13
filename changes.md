@@ -1,5 +1,8 @@
 #Change Log
 
+##0.0.4
+- Add injectToRoot keyword for json file injection
+
 ##0.0.3
 - Acception expression for file path
 
