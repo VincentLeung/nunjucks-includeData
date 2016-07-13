@@ -69,14 +69,14 @@ function IncludeDataExtension(env) {
         }
     };
 
-    this.includeJson = function(root, ctx) {
+    this.includeJson = function(root, rootCtx) {
         for(let {parent, node, key, path, deep} of new RecursiveIterator(root)) {
             if (key.startsWith(this.keywords.injectToRoot_as_)) {
-                var jsonData = this.readFile(node, ctx);
+                var jsonData = this.readFile(node, rootCtx);
                 var namespace = key.substring(this.keywords.injectToRoot_as_.length);
-                this.addData(ctx, jsonData, namespace, true);
+                this.addData(rootCtx, jsonData, namespace, true);
             } else if (key.startsWith(this.keywords.injectToHere_as_)) {
-                var jsonData = this.readFile(node, ctx);
+                var jsonData = this.readFile(node, rootCtx);
                 var namespace = key.substring(this.keywords.injectToHere_as_.length);
                 this.addData(parent, jsonData, namespace, true);
             }
@@ -84,12 +84,12 @@ function IncludeDataExtension(env) {
         return root;
     };
 
-    this.readFile = function(fileName, ctx) {
+    this.readFile = function(fileName, rootCtx) {
         try {
             var fileObj = env.loaders[0].getSource(fileName);
             if (fileObj) {
                 var jsonData = JSON.parse(fileObj.src);
-                jsonData = this.includeJson(jsonData, ctx);
+                jsonData = this.includeJson(jsonData, rootCtx);
                 return jsonData;
             } else {
                 console.log("error to load: " + fileName);
