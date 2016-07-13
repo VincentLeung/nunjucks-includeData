@@ -112,3 +112,35 @@ Display output:
 Hello Bill Gate tim.cook@gmail.com!
 Hi Bill Gate !
 ```
+##Example 3 - Inject to root
+JSON data file: `templatesDir`/data/user.json
+```json
+{
+	"firstName": "Tim",
+	"lastName": "Cook",
+	"email": "tim.cook@gmail.com",
+	"__injectToRoot_as_player": "data/user2.json"
+}
+```
+JSON data file: `templatesDir`/data/user2.json
+```json
+{
+	"firstName": "Bill",
+	"lastName": "Gate",
+	"email": "bill.gate@gmail.com"
+}
+```
+Template:
+```javascript
+{% includeData
+  'data/user.json' as user
+%}
+
+Hello {{ user.firstName }} {{ user.lastName}} {{ user.email }}!
+Hi {{ player.firstName }} {{ player.lastName}} {{ player.email }}!
+```
+Display output:
+```html
+Hello Tim Cook tim.cook@gmail.com!
+Hi Bill Gate bill.gate@gmail.com!
+```
