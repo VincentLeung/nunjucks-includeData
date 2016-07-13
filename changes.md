@@ -1,5 +1,8 @@
 #Change Log
 
+##0.0.8
+- Added clean option for injectToRoot and injectToHere
+
 ##0.0.7
 - Document update
 
