@@ -41,15 +41,23 @@ Hello Bill Gate
 ```javascript
 {% includeData <file> [as <namespace>] [clean] [, <file> [as <namespace>] [clean], ...] %}
 ```
-- `namespace`: if no namespace supplied, then it will be global namespace
+- `namespace`: if no namespace supplied, then it will be the global namespace
 - `file`: path is relative to the templatesDir (see the config section above), expression is accepted
 - `clean`: clean the namespace before read in the file, this option has no effect on the global namespace
 
 #Json file keyword
+##Inject a json file to the root scope
 ```javascript
 __injectToRoot_as_[namespace]: <file>
 ```
-- `namespace`: if no namespace supplied, then it will be global namespace
+- `namespace`: if no namespace supplied, then it will be the global namespace
+- `file`: path is relative to the templatesDir (see the config section above), expression is accepted
+
+##Inject a json file to current scope
+```javascript
+__injectToHere_as_[namespace]: <file>
+```
+- `namespace`: if no namespace supplied, then it will be the current namespace
 - `file`: path is relative to the templatesDir (see the config section above), expression is accepted
 
 ##Example 1
@@ -96,6 +104,40 @@ Template:
 Hello {{ user.firstName }} {{ user.lastName}}
 Email: {{ contact.email }}
 Email again: {{ email }}
+```
+Display output:
+```html
+Hello Bill Gate
+Email: bill.gate@gmail.com
+Email again: bill.gate@gmail.com
+```
+
+##Example 3
+JSON data file: `templatesDir`/data/user.json
+```json
+{
+	"firstName": "Bill",
+	"lastName": "Gate",
+	"__injectToHere_as_contact": "data/contact.json",
+	"__injectToHere_as_": "data/contact.json"
+}
+```
+JSON data file: `templatesDir`/data/contact.json
+```json
+{
+	"email": "bill.gate@gamil.com"
+}
+```
+
+Template:
+```javascript
+{% includeData
+  'data/user.json' as user
+%}
+
+Hello {{ user.firstName }} {{ user.lastName}}
+Email: {{ user.contact.email }}
+Email again: {{ user.email }}
 ```
 Display output:
 ```html
