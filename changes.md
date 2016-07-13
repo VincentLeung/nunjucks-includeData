@@ -1,5 +1,8 @@
 #Change Log
 
+##0.0.6
+- Add injectToHere keyword for json file injection
+
 ##0.0.5
 - Bug fix
 
