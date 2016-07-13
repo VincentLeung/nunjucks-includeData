@@ -53,10 +53,26 @@ __injectToRoot_as_[namespace]: <file>
 - `namespace`: if no namespace supplied, then it will be the global namespace
 - `file`: path is relative to the templatesDir (see the config section above), expression is accepted
 
+##Inject a json file to the root scope (clean)
+```javascript
+__injectToRoot_asClean_[namespace]: <file>
+```
+Empty the namespace before json injection.  Produce the same result as `__injectToRoot_as_` if no namespace is provided.
+- `namespace`: if no namespace supplied, then it will be the global namespace
+- `file`: path is relative to the templatesDir (see the config section above), expression is accepted
+
 ##Inject a json file to current scope
 ```javascript
 __injectToHere_as_[namespace]: <file>
 ```
+- `namespace`: if no namespace supplied, then it will be the current namespace
+- `file`: path is relative to the templatesDir (see the config section above), expression is accepted
+
+##Inject a json file to current scope (clean)
+```javascript
+__injectToHere_as_[namespace]: <file>
+```
+Empty the namespace before json injection.  Produce the same result as `__injectToHere_as_` if no namespace is provided.
 - `namespace`: if no namespace supplied, then it will be the current namespace
 - `file`: path is relative to the templatesDir (see the config section above), expression is accepted
 
