@@ -1,6 +1,6 @@
 {
   "name": "nunjucks-includeData",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Let nunjucks template Include data from JSON file",
   "main": "index.js",
   "repository": {
@@ -25,5 +25,8 @@
   "homepage": "https://github.com/VincentLeung/nunjucks-includeData",
   "devDependencies": {
     "nunjucks": "^2.4.2"
+  },
+  "dependencies": {
+    "recursive-iterator": "^2.0.0"
   }
 }
