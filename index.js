@@ -72,10 +72,12 @@ function IncludeDataExtension(env) {
     this.includeJson = function(root, rootCtx) {
         for(let {parent, node, key, path, deep} of new RecursiveIterator(root)) {
             if (key.startsWith(this.keywords.injectToRoot_as_)) {
+                delete parent[key];
                 var jsonData = this.readFile(node, rootCtx);
                 var namespace = key.substring(this.keywords.injectToRoot_as_.length);
                 this.addData(rootCtx, jsonData, namespace, true);
             } else if (key.startsWith(this.keywords.injectToHere_as_)) {
+                delete parent[key];
                 var jsonData = this.readFile(node, rootCtx);
                 var namespace = key.substring(this.keywords.injectToHere_as_.length);
                 this.addData(parent, jsonData, namespace, true);
