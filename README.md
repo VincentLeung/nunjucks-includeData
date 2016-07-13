@@ -211,6 +211,9 @@ JSON data file: `templatesDir`/data/user.json
 	"firstName": "Tim",
 	"lastName": "Cook",
 	"email": "tim.cook@gmail.com",
+	"player": {
+		"email": "peter.pan@gmail.com"
+	},
 	"__injectToHere_as_player": "data/user2.json"
 }
 ```
@@ -228,10 +231,44 @@ Template:
 %}
 
 Hello {{ user.firstName }} {{ user.lastName}} {{ user.email }}!
-Hi {{ user.player.firstName }} {{ user.player.lastName}}!
+Hi {{ user.player.firstName }} {{ user.player.lastName}} {{ user.player.email }}!
 ```
 Display output:
 ```html
 Hello Tim Cook tim.cook@gmail.com!
-Hi Bill Gate!
+Hi Bill Gate peter.pan@gmail.com!
+```
+##Example 6 - Inject to here (clean)
+JSON data file: `templatesDir`/data/user.json
+```json
+{
+	"firstName": "Tim",
+	"lastName": "Cook",
+	"email": "tim.cook@gmail.com",
+	"player": {
+		"email": "peter.pan@gmail.com"
+	},
+	"__injectToHere_asClean_player": "data/user2.json"
+}
+```
+JSON data file: `templatesDir`/data/user2.json
+```json
+{
+	"firstName": "Bill",
+	"lastName": "Gate"
+}
+```
+Template:
+```javascript
+{% includeData
+  'data/user.json' as user
+%}
+
+Hello {{ user.firstName }} {{ user.lastName}} {{ user.email }}!
+Hi {{ user.player.firstName }} {{ user.player.lastName}} {{ user.player.email }}!
+```
+Display output:
+```html
+Hello Tim Cook tim.cook@gmail.com!
+Hi Bill Gate !
 ```
