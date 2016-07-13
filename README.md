@@ -204,3 +204,34 @@ Morning Peter Pan peter.pan@gmail.com!
 Hello Tim Cook tim.cook@gmail.com!
 Hi Bill Gate !
 ```
+##Example 5 - Inject to here
+JSON data file: `templatesDir`/data/user.json
+```json
+{
+	"firstName": "Tim",
+	"lastName": "Cook",
+	"email": "tim.cook@gmail.com",
+	"__injectToHere_as_player": "data/user2.json"
+}
+```
+JSON data file: `templatesDir`/data/user2.json
+```json
+{
+	"firstName": "Bill",
+	"lastName": "Gate"
+}
+```
+Template:
+```javascript
+{% includeData
+  'data/user.json' as user
+%}
+
+Hello {{ user.firstName }} {{ user.lastName}} {{ user.email }}!
+Hi {{ user.player.firstName }} {{ user.player.lastName}}!
+```
+Display output:
+```html
+Hello Tim Cook tim.cook@gmail.com!
+Hi Bill Gate!
+```
