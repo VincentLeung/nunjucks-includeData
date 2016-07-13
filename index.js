@@ -9,6 +9,7 @@ function IncludeDataExtension(env) {
         data: 'data',
         namespace: 'namespace',
         injectToRoot_as_: '__injectToRoot_as_',
+        injectToHere_as_: '__injectToHere_as_'
     };
 
     this.parse = function(parser, nodes, lexer) {
@@ -64,6 +65,7 @@ function IncludeDataExtension(env) {
             var data = args.data[i];
             var jsonData = this.readFile(data.file, context.ctx);
             this.addData(context.ctx, jsonData, data.namespace, data.clean);
+            console.log(JSON.stringify(jsonData, null, 2));
         }
     };
 
@@ -73,6 +75,10 @@ function IncludeDataExtension(env) {
                 var jsonData = this.readFile(node, ctx);
                 var namespace = key.substring(this.keywords.injectToRoot_as_.length);
                 this.addData(ctx, jsonData, namespace, true);
+            } else if (key.startsWith(this.keywords.injectToHere_as_)) {
+                var jsonData = this.readFile(node, ctx);
+                var namespace = key.substring(this.keywords.injectToHere_as_.length);
+                this.addData(parent, jsonData, namespace, true);
             }
         }
         return root;
