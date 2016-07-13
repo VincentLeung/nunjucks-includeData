@@ -2,6 +2,7 @@
 
 ##0.0.8
 - Added clean option for injectToRoot and injectToHere
+- Let the inject keywords case insensitive
 
 ##0.0.7
 - Document update
