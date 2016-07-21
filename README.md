@@ -56,6 +56,36 @@ Empty the namespace before json injection.  Produce the same result as `__inject
 - `namespace`: if no namespace supplied, then it will be the current namespace
 - `file`: path is relative to the templatesDir (see the config section above), expression is accepted
 
+##Inject a json file to the root scope, if the json file contains an array, then insert the first element rather than whole array
+```javascript
+__injectArray0ToRoot_as_[namespace]: <file>
+```
+- `namespace`: if no namespace supplied, then it will be the global namespace
+- `file`: path is relative to the templatesDir (see the config section above), expression is accepted
+
+##Inject a json file to the root scope (clean), if the json file contains an array, then insert the first element rather than whole array
+```javascript
+__injectArray0ToRoot_asClean_[namespace]: <file>
+```
+Empty the namespace before json injection.  Produce the same result as `__injectArray0ToRoot_as_` if no namespace is provided.
+- `namespace`: if no namespace supplied, then it will be the global namespace
+- `file`: path is relative to the templatesDir (see the config section above), expression is accepted
+
+##Inject a json file to current scope, if the json file contains an array, then insert the first element rather than whole array
+```javascript
+__injectArray0ToHere_as_[namespace]: <file>
+```
+- `namespace`: if no namespace supplied, then it will be the current namespace
+- `file`: path is relative to the templatesDir (see the config section above), expression is accepted
+
+##Inject a json file to current scope (clean), if the json file contains an array, then insert the first element rather than whole array
+```javascript
+__injectArray0ToHere_as_[namespace]: <file>
+```
+Empty the namespace before json injection.  Produce the same result as `__injectArray0ToHere_as_` if no namespace is provided.
+- `namespace`: if no namespace supplied, then it will be the current namespace
+- `file`: path is relative to the templatesDir (see the config section above), expression is accepted
+
 ##Example 1 - Basic
 JSON data file: `templatesDir`/data/user.json
 ```json
@@ -257,6 +287,178 @@ JSON data file: `templatesDir`/data/user2.json
 	"firstName": "Bill",
 	"lastName": "Gate"
 }
+```
+Template:
+```javascript
+{% includeData
+  'data/user.json' as user
+%}
+
+Hello {{ user.firstName }} {{ user.lastName}} {{ user.email }}!
+Hi {{ user.player.firstName }} {{ user.player.lastName}} {{ user.player.email }}!
+```
+Display output:
+```html
+Hello Tim Cook tim.cook@gmail.com!
+Hi Bill Gate !
+```
+##Example 7 - Inject to root (1st element of array)
+JSON data file: `templatesDir`/data/user.json
+```json
+{
+	"firstName": "Tim",
+	"lastName": "Cook",
+	"email": "tim.cook@gmail.com",
+	"__injectArray0ToRoot_as_player": "data/user2.json"
+}
+```
+JSON data file: `templatesDir`/data/user2.json
+```json
+[{
+	"firstName": "Bill",
+	"lastName": "Gate"
+}, {
+	"firstName": "Tim",
+	"lastName": "Cook"
+}]
+```
+JSON data file: `templatesDir`/data/user3.json
+```json
+{
+	"firstName": "Peter",
+	"lastName": "Pan",
+	"email": "peter.pan@gmail.com"
+}
+```
+Template:
+```javascript
+{% includeData
+  'data/user3.json' as player
+%}
+
+Morning {{ player.firstName }} {{ player.lastName}} {{ player.email }}!
+
+{% includeData
+  'data/user.json' as user
+%}
+
+Hello {{ user.firstName }} {{ user.lastName}} {{ user.email }}!
+Hi {{ player.firstName }} {{ player.lastName}} {{ player.email }}!
+```
+Display output:
+```html
+Morning Peter Pan peter.pan@gmail.com!
+Hello Tim Cook tim.cook@gmail.com!
+Hi Bill Gate peter.pan@gmail.com!
+```
+##Example 8 - Inject to root (clean) (1st element of array)
+JSON data file: `templatesDir`/data/user.json
+```json
+{
+	"firstName": "Tim",
+	"lastName": "Cook",
+	"email": "tim.cook@gmail.com",
+	"__injectArray0ToRoot_asClean_player": "data/user2.json"
+}
+```
+JSON data file: `templatesDir`/data/user2.json
+```json
+[{
+	"firstName": "Bill",
+	"lastName": "Gate"
+}, {
+	"firstName": "Time",
+	"lastName": "Cook"
+}]
+```
+JSON data file: `templatesDir`/data/user3.json
+```json
+{
+	"firstName": "Peter",
+	"lastName": "Pan",
+	"email": "peter.pan@gmail.com"
+}
+```
+Template:
+```javascript
+{% includeData
+  'data/user3.json' as player
+%}
+
+Morning {{ player.firstName }} {{ player.lastName}} {{ player.email }}!
+
+{% includeData
+  'data/user.json' as user
+%}
+
+Hello {{ user.firstName }} {{ user.lastName}} {{ user.email }}!
+Hi {{ player.firstName }} {{ player.lastName}} {{ player.email }}!
+```
+Display output:
+```html
+Morning Peter Pan peter.pan@gmail.com!
+Hello Tim Cook tim.cook@gmail.com!
+Hi Bill Gate !
+```
+##Example 9 - Inject to here (1st element of array)
+JSON data file: `templatesDir`/data/user.json
+```json
+{
+	"firstName": "Tim",
+	"lastName": "Cook",
+	"email": "tim.cook@gmail.com",
+	"player": {
+		"email": "peter.pan@gmail.com"
+	},
+	"__injectArray0ToHere_as_player": "data/user2.json"
+}
+```
+JSON data file: `templatesDir`/data/user2.json
+```json
+[{
+	"firstName": "Bill",
+	"lastName": "Gate"
+}, {
+	"firstName": "Tim",
+	"lastName": "Cook"
+}]
+```
+Template:
+```javascript
+{% includeData
+  'data/user.json' as user
+%}
+
+Hello {{ user.firstName }} {{ user.lastName}} {{ user.email }}!
+Hi {{ user.player.firstName }} {{ user.player.lastName}} {{ user.player.email }}!
+```
+Display output:
+```html
+Hello Tim Cook tim.cook@gmail.com!
+Hi Bill Gate peter.pan@gmail.com!
+```
+##Example 10 - Inject to here (clean) (1st element of array)
+JSON data file: `templatesDir`/data/user.json
+```json
+{
+	"firstName": "Tim",
+	"lastName": "Cook",
+	"email": "tim.cook@gmail.com",
+	"player": {
+		"email": "peter.pan@gmail.com"
+	},
+	"__injectArray0ToHere_asClean_player": "data/user2.json"
+}
+```
+JSON data file: `templatesDir`/data/user2.json
+```json
+[{
+	"firstName": "Bill",
+	"lastName": "Gate"
+}, {
+	"firstName": "Time",
+	"lastName": "Cook"
+}]
 ```
 Template:
 ```javascript
