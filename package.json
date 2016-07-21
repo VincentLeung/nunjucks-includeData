@@ -1,6 +1,6 @@
 {
   "name": "nunjucks-includeData",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Let nunjucks template Include data from JSON file",
   "main": "index.js",
   "repository": {
