@@ -11,7 +11,11 @@ function IncludeDataExtension(env) {
         injectToRoot_as: '__injecttoroot_as_',
         injectToRoot_asClean: '__injecttoroot_asclean_',
         injectToHere_as: '__injecttohere_as_',
-        injectToHere_asClean: '__injecttohere_asclean_'
+        injectToHere_asClean: '__injecttohere_asclean_',
+        injectArray0ToRoot_as: '__injectarray0toroot_as_',
+        injectArray0ToRoot_asClean: '__injectarray0toroot_asclean_',
+        injectArray0ToHere_as: '__injectarray0tohere_as_',
+        injectArray0ToHere_asClean: '__injectarray0tohere_asclean_'
     };
 
     this.parse = function(parser, nodes, lexer) {
@@ -76,6 +80,7 @@ function IncludeDataExtension(env) {
             var keyPrefix = null;
             var ctx = rootCtx;
             var clean = false;
+            var arrayCheck = false;
             if (lowerCaseKey.startsWith(this.keywords.injectToRoot_as)) {
                 keyPrefix = this.keywords.injectToRoot_as;
             } else if (lowerCaseKey.startsWith(this.keywords.injectToRoot_asClean)) {
@@ -88,11 +93,30 @@ function IncludeDataExtension(env) {
                 keyPrefix = this.keywords.injectToHere_asClean;
                 ctx = parent;
                 clean = true;
+            } else if (lowerCaseKey.startsWith(this.keywords.injectArray0ToRoot_as)) {
+                keyPrefix = this.keywords.injectArray0ToRoot_as;
+                arrayCheck = true;
+            } else if (lowerCaseKey.startsWith(this.keywords.injectArray0ToRoot_asClean)) {
+                keyPrefix = this.keywords.injectArray0ToRoot_asClean;
+                clean = true;
+                arrayCheck = true;
+            } else if (lowerCaseKey.startsWith(this.keywords.injectArray0ToHere_as)) {
+                keyPrefix = this.keywords.injectArray0ToHere_as;
+                ctx = parent;
+                arrayCheck = true;
+            } else if (lowerCaseKey.startsWith(this.keywords.injectArray0ToHere_asClean)) {
+                keyPrefix = this.keywords.injectArray0ToHere_asClean;
+                ctx = parent;
+                clean = true;
+                arrayCheck = true;
             }
             if (keyPrefix) {
                 delete parent[key];
                 var jsonData = this.readFile(node, rootCtx);
                 var namespace = key.substring(keyPrefix.length);
+                if (arrayCheck && Array.isArray(jsonData)) {
+                    jsonData = jsonData[0];
+                }
                 this.addData(ctx, jsonData, namespace, clean);
             }
         }
